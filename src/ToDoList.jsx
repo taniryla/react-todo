@@ -1,10 +1,11 @@
 import ToDoListItem from "./ToDoListItem"
+import './ToDoList.css';
 
-export default function ToDoList(){
+export default function ToDoList({ todos }){
+    const toDoListItems = todos.map((t, idx) => <ToDoListItem index={idx} todo={t} key={idx} />)
     return (
-        <ul>
-            <ToDoListItem />
-            <ToDoListItem />
+        <ul className="ToDoList">
+            {toDoListItems}
         </ul>
     );
 }
