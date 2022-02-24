@@ -1,22 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
 import "./styles.css";
-import ToDoList from './ToDoList';
+import ToDoList from "./ToDoList";
+import NewToDoForm from "./NewToDoForm"
 
-const todos = [
-  'Have Fun',
-  'Learn React',
-  'Learn the MERN-Stack'
-];
+export default function App() {
+  const [todos, setTodos] = useState([
+    {text: "Have Fun", completed: true},
+    {text: "Learn React", completed: false},
+    {text: "Learn the MERN-Stack", completed: false}
+  ]);
+  const [showToDos, setShowToDos] = useState(true);
 
+  function addToDo(todo) {
+    setTodos([{text: todo, completed: false}, ...todos]);
+  }
 
-function App() {
+  function deleteToDo(todo) {
+    const updatedToDos = todos.filter(t => t !== todo);
+    setTodos(updatedToDos);
+  }
+
+  function completeTodo(todo) {
+    const updatedToDos = todos.map((t) =>
+      t === todo ? {text: t.text, completed: true} : t );
+    setTodos(updatedToDos)
+  }
+
   return (
     <div className="App">
-      <div>React To-Do</div> 
-      <ToDoList todos={todos}/>      
+      <h1>React To-Do</h1>
+      <button onClick={() => setShowToDos(!showToDos)}>{ showToDos ? 'HIDE' : 'SHOW' }</button>
+      {/* pass todos as a prop */}
+      {showToDos && <ToDoList todos={todos} deleteToDo={deleteToDo} completeTodo={completeTodo} />}
+      <hr />
+      <NewToDoForm addToDo={addToDo}/>
     </div>
   );
 }
-
-export default App;
